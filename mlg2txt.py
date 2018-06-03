@@ -29,6 +29,9 @@ class Buffer:
     assert self._ptr <= len(self._data)
     return self._data[ptr:self._ptr]
 
+  def remaining(self):
+    return len(self._data) - self._ptr
+
   def get_uint32(self):
     return struct.unpack("<L", self._get_bytes(4))[0]
 
@@ -171,12 +174,16 @@ for infile in args.file:
           parent   = buf.get_int32()
           ispl     = buf.get_int32()
           iststart = buf.get_int32()
-          payload  = buf.get_int32()
-          fuel     = buf.get_float32()
-          skin     = buf.get_str()
-          wm       = buf.get_int32()
-          txt += "PLID:%d PID:%d BUL:%d SH:%d BOMB:%d RCT:%d (%.3f,%.3f,%.3f) IDS:%s LOGIN:%s NAME:%s TYPE:%s COUNTRY:%s FORM:%d FIELD:%d INAIR:%d PARENT:%d ISPL:%d ISTSTART:%d PAYLOAD:%d FUEL:%.3f SKIN:%s WM:%d " % \
-                 (plid, pid, bul, sh, bomb, rct, pos[0], pos[1], pos[2], ids, login, name, ptype, country, form, field, inair, parent, ispl, iststart, payload, fuel, skin, wm)
+          txt += "PLID:%d PID:%d BUL:%d SH:%d BOMB:%d RCT:%d (%.3f,%.3f,%.3f) IDS:%s LOGIN:%s NAME:%s TYPE:%s COUNTRY:%s FORM:%d FIELD:%d INAIR:%d PARENT:%d ISPL:%d ISTSTART:%d" % \
+                 (plid, pid, bul, sh, bomb, rct, pos[0], pos[1], pos[2], ids, login, name, ptype, country, form, field, inair, parent, ispl, iststart)
+
+          # Some extra fields were added with 3.002 without changing the version
+          if buf.remaining() > 0:
+            payload = buf.get_int32()
+            fuel    = buf.get_float32()
+            skin    = buf.get_str()
+            wm      = buf.get_int32()
+            txt += " PAYLOAD:%d FUEL:%.3f SKIN:%s WM:%d " % (payload, fuel, skin, wm)
         elif atype == 11:
           # GroupInit
           gid = buf.get_int32()
