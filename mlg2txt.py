@@ -231,8 +231,16 @@ for infile in args.file:
           parentid = buf.get_int32()
           pos      = buf.get_coord()
           txt += "BOTID:%d PARENTID:%d POS(%.3f,%.3f,%.3f)" % (botid, parentid, pos[0], pos[1], pos[2])
+        elif atype == 19:
+          # RoundEnd
+          pass
         elif atype == 20:
           # Join
+          userid     = buf.get_str()
+          usernickid = buf.get_str()
+          txt += "USERID:%s USERNICKID:%s" % (userid, usernickid)
+        elif atype == 21:
+          # Leave
           userid     = buf.get_str()
           usernickid = buf.get_str()
           txt += "USERID:%s USERNICKID:%s" % (userid, usernickid)
