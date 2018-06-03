@@ -5,6 +5,7 @@ import sys
 import datetime
 import os
 import argparse
+from warnings import warn
 
 argparser = argparse.ArgumentParser(description="Converts binary .mlg flight logs into textual format")
 argparser.add_argument("-s", "--split", action='store_true', help="Split output into multiple files (as the game does), otherwise a single file is generated")
@@ -216,7 +217,7 @@ for infile in args.file:
       else:
         # Dump remaining data
         buf._get_bytes(size)
-        raise Warning("Unknown AType %d encountered" % (atype))
+        warn("Unknown AType %d encountered" % (atype))
 
       # Record always ends with 0x0A
       assert f.read(1) == b'\n'
