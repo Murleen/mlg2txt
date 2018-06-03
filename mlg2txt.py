@@ -189,6 +189,18 @@ for infile in args.file:
         pid     = buf.get_int32()
         pos     = buf.get_coord()
         print("T:%d AType:%d ID:%d TYPE:%s COUNTRY:%s NAME:%s PID:%d POS(%.3f,%.3f,%.3f)" % (time, atype, oid, otype, country, name, pid, pos[0], pos[1], pos[2]), file=outf)
+      elif atype == 13:
+        # InfluenceAreaHeader
+        aid     = buf.get_int32()
+        country = buf.get_int32()
+        enabled = buf.get_int32()
+        bc      = buf.get_str()
+        print("T:%d AType:%d AID:%d COUNTRY:%d ENABLED:%d BC(%s)" % (time, atype, aid, country, enabled, bc), file=outf)
+      elif atype == 14:
+        # InfluenceAreaBoundary
+        aid = buf.get_int32()
+        bp  = buf.get_str()
+        print("T:%d AType:%d AID:%d BP(%s)" % (time, atype, aid, bp), file=outf)
       elif atype == 15:
         # LogVersion
         if outf is None or args.split:
