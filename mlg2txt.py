@@ -63,8 +63,8 @@ with open(sys.argv[1], "rb") as f:
       aqmid  = buf.get_int32()
       rounds = buf.get_int32()
       points = buf.get_int32()
-      print("T:%d AType:%d GDate:%s GTime:%s MFile:%s MID:%s GType:%d CNTRS:%s SETTS:%s MODS:%d PRESET:%d AQMID:%d ROUNDS: %d POINTS: %d" %
-            (time, atype, gdate.strftime("%Y.%m.%d"), gtime.strftime("%H:%M:%S"), mfile, mid, gtype, cntrs, setts, mods, preset, aqmid, rounds, points))
+      print("T:%d AType:%d GDate:%d.%d.%d GTime:%d:%d:%d MFile:%s MID:%s GType:%d CNTRS:%s SETTS:%s MODS:%d PRESET:%d AQMID:%d ROUNDS: %d POINTS: %d" %
+            (time, atype, gdate.year, gdate.month, gdate.day, gtime.hour, gtime.minute, gtime.second, mfile, mid, gtype, cntrs, setts, mods, preset, aqmid, rounds, points))
     elif atype == 1:
       # Hit
       ammo = buf.get_str()
@@ -107,7 +107,7 @@ with open(sys.argv[1], "rb") as f:
       print("T:%d AType:%d PID:%d POS(%.3f, %.3f, %.3f)" % (time, atype, pid, pos[0], pos[1], pos[2]))
     elif atype == 7:
       # MissionEnd
-      print("T:%d AType:%d" % (time, atype))
+      print("T:%d AType:%d " % (time, atype))
     elif atype == 8:
       # MissionObjective
       objid  = buf.get_int32()
@@ -148,7 +148,7 @@ with open(sys.argv[1], "rb") as f:
       fuel     = buf.get_float32()
       skin     = buf.get_str()
       wm       = buf.get_int32()
-      print("T:%d AType:%d PLID:%d PID:%d BUL:%d SH:%d BOMB:%d RCT:%d (%.3f,%.3f,%.3f) IDS:%s LOGIN:%s NAME:%s TYPE:%s COUNTRY:%s FORM:%d FIELD:%d INAIR:%d PARENT:%d ISPL:%d ISTSTART:%d PAYLOAD:%d FUEL:%.3f SKIN:%s WM:%d" %
+      print("T:%d AType:%d PLID:%d PID:%d BUL:%d SH:%d BOMB:%d RCT:%d (%.3f,%.3f,%.3f) IDS:%s LOGIN:%s NAME:%s TYPE:%s COUNTRY:%s FORM:%d FIELD:%d INAIR:%d PARENT:%d ISPL:%d ISTSTART:%d PAYLOAD:%d FUEL:%.3f SKIN:%s WM:%d " %
             (time, atype, plid, pid, bul, sh, bomb, rct, pos[0], pos[1], pos[2], ids, login, name, ptype, country, form, field, inair, parent, ispl, iststart, payload, fuel, skin, wm))
     elif atype == 11:
       # GroupInit
