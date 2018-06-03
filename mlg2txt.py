@@ -55,6 +55,8 @@ for infile in args.file:
   if not infile.endswith(".mlg"):
     raise ValueError("Input file name does not end .mlg")
 
+  print("Parsing file %s" % infile)
+
   with open(infile, "rb") as f:
     outf       = None
     file_index = 0
