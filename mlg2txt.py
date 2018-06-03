@@ -4,6 +4,11 @@ import struct
 import sys
 import datetime
 import os
+import argparse
+
+argparser = argparse.ArgumentParser(description="Converts binary .mlg flight logs into textual format")
+argparser.add_argument("-s", "--split", action='store_true', help="Split output into multiple files (as the game does), otherwise a single file is generated")
+argparser.add_argument("file", nargs='+', help="The name(s) of the input .mlg files to process")
 
 class Buffer:
   """Byte array which types can be pulled from"""
@@ -43,7 +48,9 @@ class Buffer:
   def get_coord(self):
     return (self.get_float32(), self.get_float32(), self.get_float32())
 
-for infile in sys.argv[1:]:
+args = argparser.parse_args()
+
+for infile in args.file:
   if not infile.endswith(".mlg"):
     raise ValueError("Input file name does not end .mlg")
 
@@ -180,7 +187,7 @@ for infile in sys.argv[1:]:
         print("T:%d AType:%d ID:%d TYPE:%s COUNTRY:%s NAME:%s PID:%d POS(%.3f,%.3f,%.3f)" % (time, atype, oid, otype, country, name, pid, pos[0], pos[1], pos[2]), file=outf)
       elif atype == 15:
         # LogVersion
-        if outf is None:
+        if outf is None or args.split:
           outf = open("%s[%d].txt" % (os.path.basename(infile)[:-4], file_index), "wt", newline='\r\n')
           file_index += 1
 
