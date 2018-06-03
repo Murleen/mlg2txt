@@ -8,6 +8,7 @@ import argparse
 
 argparser = argparse.ArgumentParser(description="Converts binary .mlg flight logs into textual format")
 argparser.add_argument("-s", "--split", action='store_true', help="Split output into multiple files (as the game does), otherwise a single file is generated")
+argparser.add_argument("-o", "--output", default='', help="The path to write the output files to (otherwise written to working directory")
 argparser.add_argument("file", nargs='+', help="The name(s) of the input .mlg files to process")
 
 class Buffer:
@@ -188,7 +189,7 @@ for infile in args.file:
       elif atype == 15:
         # LogVersion
         if outf is None or args.split:
-          outf = open("%s[%d].txt" % (os.path.basename(infile)[:-4], file_index), "wt", newline='\r\n')
+          outf = open(os.path.join(args.output, "%s[%d].txt" % (os.path.basename(infile)[:-4], file_index)), "wt", newline='\r\n')
           file_index += 1
 
         ver = buf.get_uint32()
